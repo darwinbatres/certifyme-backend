@@ -1,11 +1,17 @@
-const express = require('express')
+const express = require('express');
+const routes = require('./routes');
 
-const app = express()
+const {
+  port,
+} = require('./configuration');
+const middleware = require('./middleware');
+const logger = require('./utils/logger');
 
-app.get('/', (req, res) => {
-  res.json({
-    message: 'welcome'
-  })
-})
+const app = express();
 
-app.listen(3000, () => console.log('app listening on port 3000'))
+middleware(app);
+routes(app);
+
+app.listen(port, () => {
+  logger.info(`app listening on port: ${port}`);
+});
