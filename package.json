@@ -1,0 +1,28 @@
+{
+  "name": "certifyme-backend",
+  "version": "1.0.0",
+  "description": "backend application for the certify me POC",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darwinbatres/certifyme-backend.git"
+  },
+  "author": "Darwin Batres",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/darwinbatres/certifyme-backend/issues"
+  },
+  "homepage": "https://github.com/darwinbatres/certifyme-backend#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "nodemon": "^1.17.5"
+  }
+}

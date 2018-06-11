@@ -1,2 +1,3 @@
-# certifyme-backend
-backend application for the certify me POC
+# Certifyme (backend)
+
+> backend application for the certify me POC
