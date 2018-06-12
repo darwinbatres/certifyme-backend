@@ -1,28 +1,53 @@
+const logger = require('../utils/logger');
 const Users = require('../models/User');
 
-module.exports.getAll = (req, res) => {
-  Users.findAll()
+module.exports.getAllUsers = (req, res) => {
+  Users.findAll({
+    attributes: [
+      'id',
+      'firstName',
+      'lastName',
+      'email',
+      'practice'
+    ]
+  })
     .then(users => {
-      res.json({
-        response: {
-          data: {
-            users
+      if(users.length > 0) {
+        res.json({
+          response: {
+            data: {
+              users
+            }
           }
-        }
-      });
+        });
+      } else {
+        res.status(404).json({
+          response: {
+            data: {
+              message: 'No users found'
+            }
+          }
+        });
+      }
     })
     .catch(err => {
-      console.log(err)
-      res.json({
-        message: 'error found while retrieving users',
+      logger.error(err);
+      res.status(500).json({
+        response: {
+          errors: [
+            {
+              message: 'error found while retrieving users, check the logs to see what the error is about'
+            }
+          ]
+        }
       });
     });
 };
 
-module.exports.getOne = (req, res) => {
-  const { userId } = req.params;
+module.exports.getOneUser = (req, res) => {
+  const { id } = req.params;
   
-  Users.findOne({ where: { id: userId } })
+  Users.findOne({ where: { id } })
     .then(user => {
       if(user) {
         res.json({ response: {
@@ -31,27 +56,30 @@ module.exports.getOne = (req, res) => {
         }
       } })
       } else {
-        res.json({ response: {
-          errors: [
-            {
+        res.status(404).json({ 
+          response: {
+            data: {
               message: 'No user found'
             }
-          ]
       } })
       }
     })
     .catch(err => {
-      res.json({ response: {
-        errors: [
-          {
-            message: 'There was an error while trying to retrive information for this user'
-          }
-        ]
+      logger.error(err);
+      res.status(500).json({ 
+        response: {
+          errors: [
+            {
+              message: 'There was an error while trying to retrive information for this user'
+            }
+          ]
       } })
     })
 };
 
-module.exports.add = (req, res) => {
+module.exports.addNewUser = (req, res) => {
+  // TO-DO
+  // add validation for required fields
   const { firstName, lastName, email, practice, roles, password } = req.body;
   Users.create({
     firstName,
@@ -65,48 +93,90 @@ module.exports.add = (req, res) => {
       res.json({ response: {
         data: {
           message: 'User created successfully',
-          user
+          user: {
+            id: user.id,
+            firstName,
+            lastName,
+            email,
+            practice,
+            roles
+          }
         }
       } })
     })
     .catch(err => {
-      res.json({ response: {
-        message: 'there was an error while creating this user'
+      logger.error(err);
+      res.status(500).json({ 
+        response: {
+          errors: [
+            {
+              message: 'there was an error while creating this user'
+            }
+          ]
       } })
     })
   
 };
 
-module.exports.update = (req, res) => {
-  const { userId } = req.params;
-  const { firstName, lastName, email, practice, roles, password } = req.body;
+module.exports.updateExistingUser = (req, res) => {
+  // TO-DO
+  // add validation for required fields
+  const { id } = req.params;
+  const { firstName, lastName, email, practice, roles } = req.body;
   
   Users.update(
    {firstName, lastName, email, practice, roles },
-   { where: { id: userId } }
+   { where: { id } }
    )
    .then((users) => {
-     res.json({ message: 'success' })
+     res.json({
+       response: {
+         data: {
+           message: 'User updated successfully',
+         }
+       }
+     })
    })
    .catch(err => {
-     console.log(err)
+     logger.error(err);
+     res.status(500).json({ 
+        response: {
+          errors: [
+            {
+              message: 'there was an error while updating this user'
+            }
+          ]
+      } })
    })
   
 };
 
-module.exports.delete = (req, res) => {
-  const { userId } = req.params;
-  const { firstName, lastName, email, practice, roles, password } = req.body;
+module.exports.deleteExistingUser = (req, res) => {
+  const { id } = req.params;
   
   Users.destroy({
     where: {
-      id: userId
+      id
     }
   })
     .then(() => {
-      res.json({ message: 'user deleted!' })
+      res.json({
+        response: {
+          data: {
+            message: 'User deleted successfully'
+          }
+        }
+      })
     })
     .catch(err => {
-      res.json({ message: 'user not deleted man' })
+      logger.error(err);
+      res.status(500).json({ 
+        response: {
+          errors: [
+            {
+              message: 'there was an error while deleting this user'
+            }
+          ]
+      } })
     });
 };

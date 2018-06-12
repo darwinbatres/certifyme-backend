@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
 const { db } = require('../configuration/db');
 
@@ -10,6 +11,12 @@ const User = sequelize.define('user', {
   practice: Sequelize.TEXT,
   roles: Sequelize.TEXT,
   password: Sequelize.TEXT,
+});
+
+User.beforeCreate(async (user) => {
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  return user.password;
 });
 
 // Create the table if it doesn't exist
