@@ -1,7 +1,7 @@
 const practices = require('./practices');
 
 module.exports = (app) => {
-  app.use('/api/practices', practices);
+  app.use('/api/v1/practices', practices);
 
   //   catch all route for non-existing requests
   app.all('*', (req, res) => {

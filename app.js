@@ -1,9 +1,7 @@
 const express = require('express');
 const routes = require('./routes');
 
-const {
-  port,
-} = require('./configuration');
+const { port } = require('./configuration');
 const middleware = require('./middleware');
 const logger = require('./utils/logger');
 

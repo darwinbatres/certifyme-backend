@@ -1,3 +1,6 @@
 module.exports = {
-  "extends": "airbnb"
+  extends: 'airbnb',
+  rules: {
+    'function-paren-newline': ['error', 'consistent'],
+  },
 };
