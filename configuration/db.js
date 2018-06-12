@@ -11,8 +11,8 @@ const {
   dbDialect,
 } = require('../configuration');
 
-module.exports = async () => {
-  const sequelize = await new Sequelize(dbName, dbUsername, dbPassword, {
+module.exports.db = () => {
+  const sequelize = new Sequelize(dbName, dbUsername, dbPassword, {
     host: dbHost,
     dialect: dbDialect,
     port: dbPort,
@@ -25,16 +25,19 @@ module.exports = async () => {
     options: {
       encrypt: false
     }
-  });
-  
-  await sequelize
-  .authenticate()
-  .then(() => {
-    console.log('connection was successful');
   })
-  .catch(err => {
-    console.log('error while connecting to the db');
-    console.log(err);
-  });
-  
+  return sequelize;
 };
+
+module.exports.checkConnection = () => {
+  const sequelize = this.db();
+  return new Promise((resolve, reject) => {
+    sequelize.authenticate()
+      .then(() => {
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
