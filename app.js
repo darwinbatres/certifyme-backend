@@ -13,12 +13,12 @@ routes(app);
 
 try {
   database();
+  
+  app.listen(port, () => {
+    logger.info(`app listening on ports: ${port}`);
+  });
 } catch (error) {
   logger.info('connection to the db failed');
   logger.info(error);
   process.exit(1);
 }
-
-app.listen(port, () => {
-  logger.info(`app listening on ports: ${port}`);
-});
