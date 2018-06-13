@@ -94,47 +94,46 @@ module.exports.getOneUser = async (req, res) => {
   }
 };
 
-module.exports.addNewUser = (req, res) => {
+module.exports.addNewUser = async (req, res) => {
   // TO-DO
   // add validation for required fields
   const { firstName, lastName, email, practice, roles, password } = req.body;
-  Users.create({
-    firstName,
-    lastName,
-    email,
-    practice,
-    roles,
-    password,
-  })
-    .then((user) => {
-      res.json({
-        response: {
-          data: {
-            message: 'User created successfully',
-            user: {
-              id: user.id,
-              firstName,
-              lastName,
-              email,
-              practice,
-              roles,
-            },
+  try {
+    const newUser = await Users.create({
+      firstName,
+      lastName,
+      email,
+      practice,
+      roles,
+      password,
+    });
+    res.json({
+      response: {
+        data: {
+          message: 'User created successfully!',
+          user: {
+            id: newUser.id,
+            firstName,
+            lastName,
+            email,
+            practice,
+            roles,
           },
         },
-      });
-    })
-    .catch((err) => {
-      logger.error(err);
-      res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'there was an error while creating this user',
-            },
-          ],
-        },
-      });
+      },
     });
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({
+      response: {
+        errors: [
+          {
+            message: 'there was an error while creating this user',
+          },
+        ],
+      },
+    });
+  }
 };
 
 module.exports.updateExistingUser = (req, res) => {
