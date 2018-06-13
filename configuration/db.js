@@ -23,21 +23,22 @@ module.exports.db = () => {
       idle: 10000,
     },
     options: {
-      encrypt: false
-    }
-  })
+      encrypt: false,
+    },
+  });
   return sequelize;
 };
 
 module.exports.checkConnection = () => {
   const sequelize = this.db();
   return new Promise((resolve, reject) => {
-    sequelize.authenticate()
+    sequelize
+      .authenticate()
       .then(() => {
         resolve();
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
-}
+};

@@ -6,15 +6,14 @@ const database = require('./configuration/db');
 const middleware = require('./middleware');
 const logger = require('./utils/logger');
 
-const User = require('./models/User');
-
 const app = express();
 
 middleware(app);
 routes(app);
 
 try {
-  database.checkConnection()
+  database
+    .checkConnection()
     .then(() => {
       app.listen(port, () => {
         logger.info(`app listening on ports: ${port}`);
