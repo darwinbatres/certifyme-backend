@@ -136,23 +136,24 @@ module.exports.addNewUser = async (req, res) => {
   }
 };
 
-module.exports.updateExistingUser = (req, res) => {
+module.exports.updateExistingUser = async (req, res) => {
   // TO-DO
   // add validation for required fields
   const { id } = req.params;
-  const { firstName, lastName, email, practice, roles } = req.body;
-
-  Users.update(
-    {
-      firstName,
-      lastName,
-      email,
-      practice,
-      roles,
-    },
-    { where: { id } },
-  )
-    .then((users) => {
+  const user = await findById({ id, res });
+  if (user) {
+    const { firstName, lastName, email, practice, roles } = req.body;
+    try {
+      await Users.update(
+        {
+          firstName,
+          lastName,
+          email,
+          practice,
+          roles,
+        },
+        { where: { id } },
+      );
       res.json({
         response: {
           data: {
@@ -160,8 +161,7 @@ module.exports.updateExistingUser = (req, res) => {
           },
         },
       });
-    })
-    .catch((err) => {
+    } catch (err) {
       logger.error(err);
       res.status(500).json({
         response: {
@@ -172,7 +172,8 @@ module.exports.updateExistingUser = (req, res) => {
           ],
         },
       });
-    });
+    }
+  }
 };
 
 module.exports.deleteExistingUser = (req, res) => {
