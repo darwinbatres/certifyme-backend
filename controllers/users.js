@@ -3,6 +3,46 @@ const Users = require('../models/User');
 
 const defaultFields = ['id', 'firstName', 'lastName', 'email', 'practice'];
 
+const findById = async ({ id, res }) => {
+  if (!parseInt(id, 10)) {
+    res.status(400).json({
+      response: {
+        errors: [
+          {
+            message:
+              'Invalid Id passed as parameter, number as userId expected',
+          },
+        ],
+      },
+    });
+  }
+  try {
+    const user = await Users.findById(id, { attributes: defaultFields });
+    if (user) {
+      return user;
+    }
+    res.status(404).json({
+      response: {
+        data: {
+          message: 'No user found',
+        },
+      },
+    });
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({
+      response: {
+        errors: [
+          {
+            message:
+              'There was an error while trying to retrive information for this user',
+          },
+        ],
+      },
+    });
+  }
+};
+
 module.exports.getAllUsers = async (req, res) => {
   try {
     const users = await Users.findAll({
@@ -40,42 +80,18 @@ module.exports.getAllUsers = async (req, res) => {
   }
 };
 
-module.exports.getOneUser = (req, res) => {
+module.exports.getOneUser = async (req, res) => {
   const { id } = req.params;
-
-  Users.findOne({ where: { id } })
-    .then((user) => {
-      if (user) {
-        res.json({
-          response: {
-            data: {
-              user,
-            },
-          },
-        });
-      } else {
-        res.status(404).json({
-          response: {
-            data: {
-              message: 'No user found',
-            },
-          },
-        });
-      }
-    })
-    .catch((err) => {
-      logger.error(err);
-      res.status(500).json({
-        response: {
-          errors: [
-            {
-              message:
-                'There was an error while trying to retrive information for this user',
-            },
-          ],
+  const user = await findById({ id, res });
+  if (user) {
+    res.json({
+      response: {
+        data: {
+          user,
         },
-      });
+      },
     });
+  }
 };
 
 module.exports.addNewUser = (req, res) => {
@@ -128,7 +144,13 @@ module.exports.updateExistingUser = (req, res) => {
   const { firstName, lastName, email, practice, roles } = req.body;
 
   Users.update(
-    { firstName, lastName, email, practice, roles },
+    {
+      firstName,
+      lastName,
+      email,
+      practice,
+      roles,
+    },
     { where: { id } },
   )
     .then((users) => {
