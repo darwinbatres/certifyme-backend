@@ -15,31 +15,32 @@ const findById = async ({ id, res }) => {
         ],
       },
     });
-  }
-  try {
-    const user = await Users.findById(id, { attributes: defaultFields });
-    if (user) {
-      return user;
-    }
-    res.status(404).json({
-      response: {
-        data: {
-          message: 'No user found',
-        },
-      },
-    });
-  } catch (err) {
-    logger.error(err);
-    res.status(500).json({
-      response: {
-        errors: [
-          {
-            message:
-              'There was an error while trying to retrive information for this user',
+  } else {
+    try {
+      const user = await Users.findById(id, { attributes: defaultFields });
+      if (user) {
+        return user;
+      }
+      res.status(404).json({
+        response: {
+          data: {
+            message: 'No user found',
           },
-        ],
-      },
-    });
+        },
+      });
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({
+        response: {
+          errors: [
+            {
+              message:
+                'There was an error while trying to retrive information for this user',
+            },
+          ],
+        },
+      });
+    }
   }
 };
 
@@ -176,15 +177,16 @@ module.exports.updateExistingUser = async (req, res) => {
   }
 };
 
-module.exports.deleteExistingUser = (req, res) => {
+module.exports.deleteExistingUser = async (req, res) => {
   const { id } = req.params;
-
-  Users.destroy({
-    where: {
-      id,
-    },
-  })
-    .then(() => {
+  const user = await findById({ id, res });
+  if (user) {
+    try {
+      await Users.destroy({
+        where: {
+          id,
+        },
+      });
       res.json({
         response: {
           data: {
@@ -192,8 +194,7 @@ module.exports.deleteExistingUser = (req, res) => {
           },
         },
       });
-    })
-    .catch((err) => {
+    } catch (err) {
       logger.error(err);
       res.status(500).json({
         response: {
@@ -204,5 +205,6 @@ module.exports.deleteExistingUser = (req, res) => {
           ],
         },
       });
-    });
+    }
+  }
 };
