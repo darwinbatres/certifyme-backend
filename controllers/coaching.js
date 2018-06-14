@@ -1,17 +1,42 @@
 const logger = require('../utils/logger');
 const Coaching = require('../models/Coaching');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
+const getCoachees = async ({ coachId }) => {
+  const coachees = await Coaching.findAll({
+    attributes: ['coacheeId'],
+    where: { coachId, coacheeId: {
+      [Op.ne]: null
+    } }
+  });
+  if(coachees.length > 0) {
+    return coachees;
+  }
+  return [];
+}
+
+const getRelations = async ({ coaches }) => {
+  const relations = coaches.map(async ({ coachId }) => {
+    const coachees = await getCoachees({ coachId });
+    return ({
+      coachId,
+      coachees
+    })
+  });
+  return Promise.all(relations);
+}
 
 module.exports.getAllRelations =  async (req, res) => {
   try {
-    const relations = await Coaching.findAll();
-    if (relations.length > 0) {
-      const coaches = [];
-      relations.map(relation => {
-          if(coaches.indexOf(relation.coachId) === -1){
-              coaches.push(relation.coachId);
-          }
-      });
-      res.json({ coaches });
+    const coaches = await Coaching.findAll({
+      attributes: ['coachId'],
+      group: 'coachId'
+    });
+    
+    if (coaches.length > 0) {
+      const relations = await getRelations({ coaches });
+      res.json({ message: 'it all eneded', relations });
     } else {
       res.status(404).json({
         response: {
@@ -37,10 +62,9 @@ module.exports.getAllRelations =  async (req, res) => {
 };
 
 module.exports.addNewRelation = async (req, res) => {
-    // TO-DO
+  // TO-DO
   // add validation for required fields
   const { coachId, coacheeId } = req.body;
-  
     try {
     const newRelation = await Coaching.create({
      coachId, coacheeId
