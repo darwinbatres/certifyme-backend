@@ -137,7 +137,63 @@ module.exports.addNewRelation = async (req, res) => {
   }
 }
 
-module.exports.getMyCoachees =  async (req, res) => {
+module.exports.getMyCoach =  async (req, res) => {
+  const { coacheeId } = req.params;
+  if (!parseInt(coacheeId, 10)) {
+    res.status(400).json({
+      response: {
+        errors: [
+          {
+            message:
+              'coacheeId is a required value and it must be numeric value',
+          },
+        ],
+      },
+    });
+  } else {
+    try {
+      const coach = await Coaching.findOne({
+        attributes: ['coachId'],
+        where: {
+          coacheeId
+        }
+      });
+      
+      if(coach) {
+        const coachInfo = await getUserInformation(coach.coachId);
+        res.json({
+          response: {
+            data: {
+              coach: coachInfo
+            }
+          }
+        })
+      } else {
+        res.status(404).json({
+          response: {
+            data: {
+              message: 'No coach information found',
+            },
+          },
+        });
+      }
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({
+        response: {
+          errors: [
+            {
+              message:
+                'error found while retrieving coach information, check the logs to see what the error is about',
+            },
+          ],
+        },
+      });
+    }
+  }
+}
+
+  module.exports.getMyCoachees =  async (req, res) => {
   const { coachId } = req.params;
   
   if (!parseInt(coachId, 10)) {
@@ -146,7 +202,7 @@ module.exports.getMyCoachees =  async (req, res) => {
         errors: [
           {
             message:
-              'coachId is a required value and it must be numeric values',
+              'coachId is a required value and it must be numeric value',
           },
         ],
       },
@@ -157,7 +213,11 @@ module.exports.getMyCoachees =  async (req, res) => {
     
       if(coachees.length > 0) {
         const coacheesResults = await getEmbeddedCoachees({ coachees });
-        res.json({ coachees: coacheesResults})
+        res.json({ response: {
+          data: {
+            coachees: coacheesResults
+          }
+        } })
       } else {
         res.status(404).json({
           response: {
@@ -174,15 +234,13 @@ module.exports.getMyCoachees =  async (req, res) => {
           errors: [
             {
               message:
-                'error found while retrieving certifications, check the logs to see what the error is about',
+                'error found while retrieving coachees, check the logs to see what the error is about',
             },
           ],
         },
       });
     }
   }
-  
-  
   
   
   
