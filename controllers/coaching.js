@@ -21,8 +21,6 @@ const getCoachees = async ({ coachId }) => {
 }
 
 const getEmbeddedCoachees = async ({ coachees }) => {
-  console.log('inside embedded');
-  console.log(coachees)
   const results = coachees.map(async (tempCoachee) => {
     const coachee = await getUserInformation(tempCoachee.coacheeId);
     return ({
@@ -100,8 +98,6 @@ module.exports.getAllRelations =  async (req, res) => {
 };
 
 module.exports.addNewRelation = async (req, res) => {
-  // TO-DO
-  // add validation for required fields
   const { coachId, coacheeId } = req.body;
   if (!parseInt(coachId, 10) || !parseInt(coacheeId, 10)) {
     res.status(400).json({
@@ -141,6 +137,91 @@ module.exports.addNewRelation = async (req, res) => {
   }
 }
 
+module.exports.getMyCoachees =  async (req, res) => {
+  const { coachId } = req.params;
+  
+  if (!parseInt(coachId, 10)) {
+    res.status(400).json({
+      response: {
+        errors: [
+          {
+            message:
+              'coachId is a required value and it must be numeric values',
+          },
+        ],
+      },
+    });
+  } else {
+    try {
+      const coachees = await getCoachees({ coachId });
+    
+      if(coachees.length > 0) {
+        const coacheesResults = await getEmbeddedCoachees({ coachees });
+        res.json({ coachees: coacheesResults})
+      } else {
+        res.status(404).json({
+          response: {
+            data: {
+              message: 'No coachees found',
+            },
+          },
+        });
+      }
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({
+        response: {
+          errors: [
+            {
+              message:
+                'error found while retrieving certifications, check the logs to see what the error is about',
+            },
+          ],
+        },
+      });
+    }
+  }
+  
+  
+  
+  
+  
+  
+  // try {
+  //   const certifications = await Certification.findAll({
+  //     attributes: defaultFields,
+  //   });
+  //   if (certifications.length > 0) {
+  //     res.json({
+  //       response: {
+  //         data: {
+  //           certifications,
+  //         },
+  //       },
+  //     });
+  //   } else {
+  //     res.status(404).json({
+  //       response: {
+  //         data: {
+  //           message: 'No certifications found',
+  //         },
+  //       },
+  //     });
+  //   }
+  // } catch (err) {
+  //   logger.error(err);
+  //   res.status(500).json({
+  //     response: {
+  //       errors: [
+  //         {
+  //           message:
+  //             'error found while retrieving certifications, check the logs to see what the error is about',
+  //         },
+  //       ],
+  //     },
+  //   });
+  // }
+};
 
 // const logger = require('../utils/logger');
 // const Certification = require('../models/Certification');
