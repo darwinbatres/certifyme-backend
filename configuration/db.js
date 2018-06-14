@@ -3,12 +3,7 @@ const Sequelize = require('sequelize');
 const { Op } = Sequelize;
 
 const {
-  dbHost,
-  dbPassword,
-  dbPort,
-  dbName,
-  dbUsername,
-  dbDialect,
+  dbHost, dbPassword, dbPort, dbName, dbUsername, dbDialect,
 } = require('../configuration');
 
 module.exports.db = () => {

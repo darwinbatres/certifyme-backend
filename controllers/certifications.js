@@ -9,8 +9,7 @@ const findById = async ({ id, res }) => {
       response: {
         errors: [
           {
-            message:
-              'Invalid Id passed as parameter, number as certificationId expected',
+            message: 'Invalid Id passed as parameter, number as certificationId expected',
           },
         ],
       },
@@ -44,7 +43,7 @@ const findById = async ({ id, res }) => {
   }
 };
 
-module.exports.getAllCertifications =  async (req, res) => {
+module.exports.getAllCertifications = async (req, res) => {
   try {
     const certifications = await Certification.findAll({
       attributes: defaultFields,
@@ -98,13 +97,15 @@ module.exports.getOneCertification = async (req, res) => {
 module.exports.addNewCertification = async (req, res) => {
   // TO-DO
   // add validation for required fields
-  const { name, addedBy, practice, version } = req.body;
+  const {
+    name, addedBy, practice, version,
+  } = req.body;
   try {
     const newCertification = await Certification.create({
       name,
       addedBy,
       practice,
-      version
+      version,
     });
     res.json({
       response: {
@@ -114,7 +115,7 @@ module.exports.addNewCertification = async (req, res) => {
             id: newCertification.id,
             name,
             practice,
-            version
+            version,
           },
         },
       },
@@ -134,16 +135,22 @@ module.exports.addNewCertification = async (req, res) => {
 };
 
 module.exports.updateExistingCertification = async (req, res) => {
-//   // TO-DO
-//   // add validation for required fields
+  //   // TO-DO
+  //   // add validation for required fields
   const { id } = req.params;
   const certification = await findById({ id, res });
   if (certification) {
-    const { name, addedBy, practice, version, expired } = req.body;
+    const {
+      name, addedBy, practice, version, expired,
+    } = req.body;
     try {
       await Certification.update(
         {
-          name, addedBy, practice, version, expired
+          name,
+          addedBy,
+          practice,
+          version,
+          expired,
         },
         { where: { id } },
       );

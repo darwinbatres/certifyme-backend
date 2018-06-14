@@ -6,8 +6,10 @@ const response = {
   },
   errors: [
     {
-      // errorId: 'errorID'
+      // errorId: 'errorID' perhaps
       message: 'error description',
     },
   ],
 };
+
+module.exports = response;

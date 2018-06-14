@@ -9,8 +9,7 @@ const findById = async ({ id, res }) => {
       response: {
         errors: [
           {
-            message:
-              'Invalid Id passed as parameter, number as userId expected',
+            message: 'Invalid Id passed as parameter, number as userId expected',
           },
         ],
       },
@@ -34,8 +33,7 @@ const findById = async ({ id, res }) => {
         response: {
           errors: [
             {
-              message:
-                'There was an error while trying to retrive information for this user',
+              message: 'There was an error while trying to retrive information for this user',
             },
           ],
         },
@@ -47,7 +45,7 @@ const findById = async ({ id, res }) => {
 module.exports.getUserInformation = async (id) => {
   const user = await Users.findById(id, { attributes: defaultFields });
   return user;
-}
+};
 
 module.exports.getAllUsers = async (req, res) => {
   try {
@@ -103,7 +101,9 @@ module.exports.getOneUser = async (req, res) => {
 module.exports.addNewUser = async (req, res) => {
   // TO-DO
   // add validation for required fields
-  const { firstName, lastName, email, practice, roles, password } = req.body;
+  const {
+    firstName, lastName, email, practice, roles, password,
+  } = req.body;
   try {
     const newUser = await Users.create({
       firstName,
@@ -148,7 +148,9 @@ module.exports.updateExistingUser = async (req, res) => {
   const { id } = req.params;
   const user = await findById({ id, res });
   if (user) {
-    const { firstName, lastName, email, practice, roles } = req.body;
+    const {
+      firstName, lastName, email, practice, roles,
+    } = req.body;
     try {
       await Users.update(
         {

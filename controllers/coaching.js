@@ -1,79 +1,82 @@
 const logger = require('../utils/logger');
 const Coaching = require('../models/Coaching');
 const { getUserInformation } = require('./users');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+// const Sequelize = require('sequelize');
+
+// const { Op } = Sequelize;
 
 const getCoachees = async ({ coachId }) => {
   const coachees = await Coaching.findAll({
     attributes: ['coacheeId', 'id'],
-    where: { 
-      coachId, 
+    where: {
+      coachId,
       // coacheeId: {
       //   [Op.or]: {
       //     [Op.ne]: null,
       //     [Op.ne]: '',
       //   }
-      // } 
-    }
+      // }
+    },
   });
   return coachees.length > 0 ? coachees : [];
-}
+};
 
 const getEmbeddedCoachees = async ({ coachees }) => {
   const results = coachees.map(async (tempCoachee) => {
     const coachee = await getUserInformation(tempCoachee.coacheeId);
-    return ({
+    return {
       coachee,
-      relationId: tempCoachee.id
-    })
+      relationId: tempCoachee.id,
+    };
   });
-  return Promise.all(results)
-}
+  return Promise.all(results);
+};
 
 const getUsersInformation = async ({ relationsIds }) => {
-  const usersInfo = relationsIds.map(async relation => {
+  const usersInfo = relationsIds.map(async (relation) => {
     const coach = await getUserInformation(relation.coachId);
     let coachees = [];
-    if(relation.coachees.length > 0) {
+    if (relation.coachees.length > 0) {
       coachees = await getEmbeddedCoachees({ coachees: relation.coachees });
     }
-    return ({
+    return {
       coach,
-      coachees
-    });
+      coachees,
+    };
   });
-  return Promise.all(usersInfo)
+  return Promise.all(usersInfo);
 };
 
 const getRelations = async ({ coaches }) => {
   const relations = coaches.map(async ({ coachId }) => {
     const coachees = await getCoachees({ coachId });
-    return ({
+    return {
       coachId,
-      coachees
-    })
+      coachees,
+    };
   });
   return Promise.all(relations);
-}
+};
 
-module.exports.getAllRelations =  async (req, res) => {
+module.exports.getAllRelations = async (req, res) => {
   try {
     const coaches = await Coaching.findAll({
       attributes: ['coachId'],
-      group: 'coachId'
+      group: 'coachId',
     });
-    
+
     if (coaches.length > 0) {
       const relationsIds = await getRelations({ coaches });
-      
+
       const relations = await getUsersInformation({ relationsIds });
-      
-      res.json({ response: {
-        data: {
-          relations
-        }
-      } });
+
+      res.json({
+        response: {
+          data: {
+            relations,
+          },
+        },
+      });
     } else {
       res.status(404).json({
         response: {
@@ -114,7 +117,8 @@ module.exports.addNewRelation = async (req, res) => {
   } else {
     try {
       await Coaching.create({
-       coachId, coacheeId
+        coachId,
+        coacheeId,
       });
       res.json({
         response: {
@@ -123,30 +127,29 @@ module.exports.addNewRelation = async (req, res) => {
           },
         },
       });
-  } catch (err) {
-    logger.error(err);
-    res.status(500).json({
-      response: {
-        errors: [
-          {
-            message: 'there was an error while creating this relation',
-          },
-        ],
-      },
-    });
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({
+        response: {
+          errors: [
+            {
+              message: 'there was an error while creating this relation',
+            },
+          ],
+        },
+      });
+    }
   }
-  }
-}
+};
 
-module.exports.getMyCoach =  async (req, res) => {
+module.exports.getMyCoach = async (req, res) => {
   const { coacheeId } = req.params;
   if (!parseInt(coacheeId, 10)) {
     res.status(400).json({
       response: {
         errors: [
           {
-            message:
-              'coacheeId is a required value and it must be numeric value',
+            message: 'coacheeId is a required value and it must be numeric value',
           },
         ],
       },
@@ -156,19 +159,19 @@ module.exports.getMyCoach =  async (req, res) => {
       const coach = await Coaching.findOne({
         attributes: ['coachId'],
         where: {
-          coacheeId
-        }
+          coacheeId,
+        },
       });
-      
-      if(coach) {
+
+      if (coach) {
         const coachInfo = await getUserInformation(coach.coachId);
         res.json({
           response: {
             data: {
-              coach: coachInfo
-            }
-          }
-        })
+              coach: coachInfo,
+            },
+          },
+        });
       } else {
         res.status(404).json({
           response: {
@@ -192,18 +195,17 @@ module.exports.getMyCoach =  async (req, res) => {
       });
     }
   }
-}
+};
 
-module.exports.getMyCoachees =  async (req, res) => {
+module.exports.getMyCoachees = async (req, res) => {
   const { coachId } = req.params;
-  
+
   if (!parseInt(coachId, 10)) {
     res.status(400).json({
       response: {
         errors: [
           {
-            message:
-              'coachId is a required value and it must be numeric value',
+            message: 'coachId is a required value and it must be numeric value',
           },
         ],
       },
@@ -211,14 +213,16 @@ module.exports.getMyCoachees =  async (req, res) => {
   } else {
     try {
       const coachees = await getCoachees({ coachId });
-    
-      if(coachees.length > 0) {
+
+      if (coachees.length > 0) {
         const coacheesResults = await getEmbeddedCoachees({ coachees });
-        res.json({ response: {
-          data: {
-            coachees: coacheesResults
-          }
-        } })
+        res.json({
+          response: {
+            data: {
+              coachees: coacheesResults,
+            },
+          },
+        });
       } else {
         res.status(404).json({
           response: {
@@ -242,44 +246,6 @@ module.exports.getMyCoachees =  async (req, res) => {
       });
     }
   }
-  
-  
-  
-  
-  // try {
-  //   const certifications = await Certification.findAll({
-  //     attributes: defaultFields,
-  //   });
-  //   if (certifications.length > 0) {
-  //     res.json({
-  //       response: {
-  //         data: {
-  //           certifications,
-  //         },
-  //       },
-  //     });
-  //   } else {
-  //     res.status(404).json({
-  //       response: {
-  //         data: {
-  //           message: 'No certifications found',
-  //         },
-  //       },
-  //     });
-  //   }
-  // } catch (err) {
-  //   logger.error(err);
-  //   res.status(500).json({
-  //     response: {
-  //       errors: [
-  //         {
-  //           message:
-  //             'error found while retrieving certifications, check the logs to see what the error is about',
-  //         },
-  //       ],
-  //     },
-  //   });
-  // }
 };
 
 module.exports.deleteExistingRelation = async (req, res) => {
@@ -289,8 +255,7 @@ module.exports.deleteExistingRelation = async (req, res) => {
       response: {
         errors: [
           {
-            message:
-              'relationId is a required value and it must be numeric value',
+            message: 'relationId is a required value and it must be numeric value',
           },
         ],
       },
@@ -298,10 +263,10 @@ module.exports.deleteExistingRelation = async (req, res) => {
   } else {
     try {
       const relation = await Coaching.findById(id);
-      
-      if(relation) {
+
+      if (relation) {
         await Coaching.destroy({
-           where: {
+          where: {
             id,
           },
         });
@@ -335,7 +300,7 @@ module.exports.deleteExistingRelation = async (req, res) => {
       });
     }
   }
-}
+};
 
 module.exports.updateExistingRelation = async (req, res) => {
   const { id } = req.params;
@@ -354,12 +319,12 @@ module.exports.updateExistingRelation = async (req, res) => {
   } else {
     try {
       const relation = await Coaching.findById(id);
-      
-      if(relation) {
+
+      if (relation) {
         await Coaching.update(
           {
             coachId,
-            coacheeId
+            coacheeId,
           },
           { where: { id } },
         );
@@ -379,17 +344,17 @@ module.exports.updateExistingRelation = async (req, res) => {
           },
         });
       }
-  } catch (err) {
-    logger.error(err);
-    res.status(500).json({
-      response: {
-        errors: [
-          {
-            message: 'there was an error while creating this relation',
-          },
-        ],
-      },
-    });
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({
+        response: {
+          errors: [
+            {
+              message: 'there was an error while creating this relation',
+            },
+          ],
+        },
+      });
+    }
   }
-  }
-}
+};

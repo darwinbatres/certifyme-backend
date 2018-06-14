@@ -8,12 +8,11 @@ const Certification = sequelize.define('certification', {
   addedBy: Sequelize.INTEGER,
   practice: Sequelize.STRING,
   expired: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
   },
-  version: Sequelize.STRING
+  version: Sequelize.STRING,
 });
-
 
 // Create the table if it doesn't exist
 // TO-DO

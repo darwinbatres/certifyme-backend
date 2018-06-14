@@ -8,7 +8,6 @@ const Coaching = sequelize.define('coaching', {
   coacheeId: Sequelize.INTEGER,
 });
 
-
 // Create the table if it doesn't exist
 // TO-DO
 Coaching.sync();
