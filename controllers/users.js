@@ -44,6 +44,11 @@ const findById = async ({ id, res }) => {
   }
 };
 
+module.exports.getUserInformation = async (id) => {
+  const user = await Users.findById(id, { attributes: defaultFields });
+  return user;
+}
+
 module.exports.getAllUsers = async (req, res) => {
   try {
     const users = await Users.findAll({

@@ -1,20 +1,51 @@
 const logger = require('../utils/logger');
 const Coaching = require('../models/Coaching');
+const { getUserInformation } = require('./users');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 const getCoachees = async ({ coachId }) => {
   const coachees = await Coaching.findAll({
     attributes: ['coacheeId'],
-    where: { coachId, coacheeId: {
-      [Op.ne]: null
-    } }
+    where: { 
+      coachId, 
+      // coacheeId: {
+      //   [Op.or]: {
+      //     [Op.ne]: null,
+      //     [Op.ne]: '',
+      //   }
+      // } 
+    }
   });
-  if(coachees.length > 0) {
-    return coachees;
-  }
-  return [];
+  return coachees.length > 0 ? coachees : [];
 }
+
+const getEmbeddedCoachees = async ({ coachees }) => {
+  console.log('inside embedded');
+  console.log(coachees)
+  const results = coachees.map(async (tempCoachee) => {
+    const coachee = await getUserInformation(tempCoachee.coacheeId);
+    return ({
+      coachee,
+    })
+  });
+  return Promise.all(results)
+}
+
+const getUsersInformation = async ({ relationsIds }) => {
+  const usersInfo = relationsIds.map(async relation => {
+    const coach = await getUserInformation(relation.coachId);
+    let coachees = [];
+    if(relation.coachees.length > 0) {
+      coachees = await getEmbeddedCoachees({ coachees: relation.coachees });
+    }
+    return ({
+      coach,
+      coachees
+    });
+  });
+  return Promise.all(usersInfo)
+};
 
 const getRelations = async ({ coaches }) => {
   const relations = coaches.map(async ({ coachId }) => {
@@ -35,8 +66,15 @@ module.exports.getAllRelations =  async (req, res) => {
     });
     
     if (coaches.length > 0) {
-      const relations = await getRelations({ coaches });
-      res.json({ message: 'it all eneded', relations });
+      const relationsIds = await getRelations({ coaches });
+      
+      const relations = await getUsersInformation({ relationsIds });
+      
+      res.json({ response: {
+        data: {
+          relations
+        }
+      } });
     } else {
       res.status(404).json({
         response: {
@@ -65,17 +103,29 @@ module.exports.addNewRelation = async (req, res) => {
   // TO-DO
   // add validation for required fields
   const { coachId, coacheeId } = req.body;
-    try {
-    const newRelation = await Coaching.create({
-     coachId, coacheeId
-    });
-    res.json({
+  if (!parseInt(coachId, 10) || !parseInt(coacheeId, 10)) {
+    res.status(400).json({
       response: {
-        data: {
-          message: 'Relation created successfully!',
-        },
+        errors: [
+          {
+            message:
+              'both coachId and coacheeId are required values and both must be numeric values',
+          },
+        ],
       },
     });
+  } else {
+    try {
+      await Coaching.create({
+       coachId, coacheeId
+      });
+      res.json({
+        response: {
+          data: {
+            message: 'Relation created successfully!',
+          },
+        },
+      });
   } catch (err) {
     logger.error(err);
     res.status(500).json({
@@ -87,6 +137,7 @@ module.exports.addNewRelation = async (req, res) => {
         ],
       },
     });
+  }
   }
 }
 
