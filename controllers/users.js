@@ -1,7 +1,7 @@
 const logger = require('../utils/logger');
 const Users = require('../models/User');
 
-const defaultFields = ['id', 'firstName', 'lastName', 'email', 'practice'];
+const defaultFields = ['id', 'firstName', 'lastName', 'email', 'practice', 'roles'];
 
 const findById = async ({ id, res }) => {
   if (!parseInt(id, 10)) {
