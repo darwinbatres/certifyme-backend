@@ -21,6 +21,7 @@ User.beforeCreate(async (user) => {
 
 // Create the table if it doesn't exist
 // TO-DO
+User.sync();
 // User.sync({force: true});
 
 module.exports = User;
