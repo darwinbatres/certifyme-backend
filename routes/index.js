@@ -8,6 +8,10 @@ const coaching = require('./coaching');
 const swaggerDocument = require('../configuration/swagger.json');
 
 module.exports = (app) => {
+  
+  console.log('path: ')
+  console.log(app);
+  console.log('end path')
   // setting up documentation
   const options = {
     swaggerOptions: {
@@ -18,7 +22,7 @@ module.exports = (app) => {
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, options));
 
   // general routes
-  app.use('/api/v1/practices', practices);
+  // app.use('/api/v1/practices', practices);
   app.use('/api/v1/users', users);
   app.use('/api/v1/certifications', certifications);
   app.use('/api/v1/coach-practice', coaching);

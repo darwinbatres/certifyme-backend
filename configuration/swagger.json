@@ -6,15 +6,23 @@
     "url": "https://opensource.org/licenses/MIT"
   },
   "version": "1.0.0",
-  "host": "localhost:3000",
+  "host": "nodejs-raven125.c9users.io",
   "basePath": "/api",
   "tags": [
     {
       "name": "Users",
-      "description": "List of operations availables on users"
+      "description": "List of available operations on users"
+    },
+    {
+      "name": "Certifications",
+      "description": "List of available operations on certifications"
+    },
+    {
+      "name": "Coach-Practice",
+      "description": "List of available operations on coaching practice"
     }
   ],
-  "schemes": ["http"],
+  "schemes": ["http", "https"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
@@ -22,6 +30,26 @@
       "get": {
         "tags": ["Users"],
         "summary": "Will retrieve list of all users",
+        "description": "Wil retrieve list of all users",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "List of all users in the application",
+            "schema": {
+              "$ref": "#definitions/user"
+            }
+          },
+          "404": {
+            "description": "No users present in the application",
+            "schema": {
+              "$ref": "#definitions/user"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Will ",
         "description": "Wil retrieve list of all users",
         "produces": ["application/json"],
         "responses": {
