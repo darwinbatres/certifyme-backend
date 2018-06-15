@@ -9,9 +9,6 @@ const swaggerDocument = require('../configuration/swagger.json');
 
 module.exports = (app) => {
   
-  console.log('path: ')
-  console.log(app);
-  console.log('end path')
   // setting up documentation
   const options = {
     swaggerOptions: {

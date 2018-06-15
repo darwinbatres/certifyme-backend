@@ -36,13 +36,19 @@
           "200": {
             "description": "List of all users in the application",
             "schema": {
-              "$ref": "#definitions/user"
+              "$ref": "#definitions/users"
             }
           },
           "404": {
             "description": "No users present in the application",
             "schema": {
-              "$ref": "#definitions/user"
+              "$ref": "#definitions/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#definitions/error"
             }
           }
         }
@@ -56,13 +62,13 @@
           "200": {
             "description": "List of all users in the application",
             "schema": {
-              "$ref": "#definitions/user"
+              "$ref": "#/definitions/users"
             }
           },
           "404": {
             "description": "No users present in the application",
             "schema": {
-              "$ref": "#definitions/user"
+              "$ref": "#/definitions/errors"
             }
           }
         }
@@ -90,6 +96,33 @@
         },
         "roles": {
           "type": "string"
+        }
+      }
+    },
+    "users": {
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/user"
+          }
+        }
+      }
+    },
+    "error": {
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "errors": {
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/error"
+          }
         }
       }
     }

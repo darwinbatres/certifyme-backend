@@ -47,6 +47,7 @@ module.exports.getUserInformation = async (id) => {
   return user;
 };
 
+// GET => /api/v1/users
 module.exports.getAllUsers = async (req, res) => {
   try {
     const users = await Users.findAll({
@@ -54,32 +55,24 @@ module.exports.getAllUsers = async (req, res) => {
     });
     if (users.length > 0) {
       res.json({
-        response: {
-          data: {
-            users,
-          },
-        },
+        users,
       });
     } else {
       res.status(404).json({
-        response: {
-          data: {
-            message: 'No users found',
-          },
-        },
+        error: {
+          message:
+            'No Users found',
+        }
       });
     }
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      response: {
-        errors: [
-          {
-            message:
-              'error found while retrieving users, check the logs to see what the error is about',
-          },
-        ],
-      },
+      error: {
+        message:
+          'error found while retrieving users, check the logs to see what the error is about',
+      } 
+      ,
     });
   }
 };
