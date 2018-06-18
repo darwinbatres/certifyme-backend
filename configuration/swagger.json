@@ -186,7 +186,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "Id of the user we want to modify",
+            "description": "Id of the user we want to delete",
             "required": true,
             "type": "integer"
           }
@@ -346,6 +346,47 @@
         "responses": {
           "200": {
             "description": "User is updated successfully",
+            "schema": {
+              "$ref": "#/models/response"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter to retrieve a certification",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No certification found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Certifications"],
+        "summary": "Will allow to delete an existing certification",
+        "description": "Will allow to delete an existing certification",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the certification we want to delete",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certification is deleted successfully",
             "schema": {
               "$ref": "#/models/response"
             }

@@ -4,10 +4,10 @@ const controller = require('../controllers/users');
 const router = express.Router();
 
 // /api/v1/users
-router.get('/', controller.getAllUsers); // done
-router.get('/:id', controller.getOneUser); // done
-router.post('/', controller.addNewUser); // done
-router.patch('/:id', controller.updateExistingUser); // done
+router.get('/', controller.getAllUsers);
+router.get('/:id', controller.getOneUser);
+router.post('/', controller.addNewUser);
+router.patch('/:id', controller.updateExistingUser);
 router.delete('/:id', controller.deleteExistingUser);
 
 module.exports = router;

@@ -6,9 +6,7 @@ const defaultFields = ['id', 'name', 'practice', 'version', 'expired', 'createdA
 const findById = async ({ id, res }) => {
   if (!parseInt(id, 10)) {
     res.status(400).json({
-      error: {
-        message: 'Invalid Id passed as parameter, number as certificationId expected',
-      }
+      message: 'Invalid Id passed as parameter, number as certificationId expected',
     });
   } else {
     try {
@@ -17,16 +15,12 @@ const findById = async ({ id, res }) => {
         return certification;
       }
       res.status(404).json({
-        error: {
-          message: 'No certification found',
-        }
+        message: 'No certification found',
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        error: {
-          message: 'There was an error while trying to retrive information for this certification',
-        }
+        message: 'There was an error while trying to retrive information for this certification',
       });
     }
   }
@@ -55,17 +49,13 @@ module.exports.getAllCertifications = async (req, res) => {
       });
     } else {
       res.status(404).json({
-        error: {
-          message: 'No certifications found',
-        }
+        message: 'No certifications found',
       });
     }
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      error: {
-        message: 'error found while retrieving certifications, check the logs to see what the error is about',
-      }
+      message: 'error found while retrieving certifications, check the logs to see what the error is about',
     });
   }
 };
@@ -98,9 +88,7 @@ module.exports.addNewCertification = async (req, res) => {
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      error: {
-        message: 'there was an error while creating this certification',
-      }
+      message: 'there was an error while creating this certification',
     });
   }
 };
@@ -132,14 +120,13 @@ module.exports.updateExistingCertification = async (req, res) => {
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        error: {
-          message: 'there was an error while updating this certification',
-        }
+        message: 'there was an error while updating this certification',
       });
     }
   }
 };
 
+// DELETE => /api/v1/certifications/:id
 module.exports.deleteExistingCertification = async (req, res) => {
   const { id } = req.params;
   const certification = await findById({ id, res });
@@ -151,22 +138,12 @@ module.exports.deleteExistingCertification = async (req, res) => {
         },
       });
       res.json({
-        response: {
-          data: {
-            message: 'Certification deleted successfully',
-          },
-        },
+        message: 'Certification deleted successfully',
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'there was an error while deleting this certification',
-            },
-          ],
-        },
+        message: 'there was an error while deleting this certification',
       });
     }
   }
