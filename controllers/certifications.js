@@ -105,9 +105,10 @@ module.exports.addNewCertification = async (req, res) => {
   }
 };
 
+// PATCH => /api/v1/certifications/:id
 module.exports.updateExistingCertification = async (req, res) => {
-  //   // TO-DO
-  //   // add validation for required fields
+    // TO-DO
+    // add validation for required fields
   const { id } = req.params;
   const certification = await findById({ id, res });
   if (certification) {
@@ -126,22 +127,14 @@ module.exports.updateExistingCertification = async (req, res) => {
         { where: { id } },
       );
       res.json({
-        response: {
-          data: {
-            message: 'Certification updated successfully',
-          },
-        },
+        message: 'Certification updated successfully',
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'there was an error while updating this certification',
-            },
-          ],
-        },
+        error: {
+          message: 'there was an error while updating this certification',
+        }
       });
     }
   }

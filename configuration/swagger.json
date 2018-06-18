@@ -319,6 +319,56 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": ["Certifications"],
+        "summary": "Will allow to update existing certifications",
+        "description": "Will allow to update existing certifications",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the certification we want to modify",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "certification",
+            "description": "Certification we want to update",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/models/certification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is updated successfully",
+            "schema": {
+              "$ref": "#/models/response"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter to retrieve a certification",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No certification found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
       }
     }
   },
@@ -411,7 +461,7 @@
       }
     },
     "certification": {
-      "required": ["name", "addedBy", "practice", "version"],
+      "required": ["name", "addedBy", "practice", "version", "expired"],
        "properties": {
         "id": {
           "type": "integer"
