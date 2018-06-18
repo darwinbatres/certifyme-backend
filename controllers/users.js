@@ -20,9 +20,7 @@ const findById = async ({ id, res }) => {
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        error: {
-          message: 'There was an error while trying to retrive information for this user',
-        },
+        message: 'There was an error while trying to retrive information for this user',
       });
     }
   }
@@ -56,20 +54,13 @@ module.exports.getAllUsers = async (req, res) => {
       });
     } else {
       res.status(404).json({
-        error: {
-          message:
-            'No Users found',
-        }
+        message: 'No Users found',
       });
     }
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      error: {
-        message:
-          'error found while retrieving users, check the logs to see what the error is about',
-      } 
-      ,
+      message: 'error found while retrieving users, check the logs to see what the error is about',
     });
   }
 };
@@ -103,9 +94,7 @@ module.exports.addNewUser = async (req, res) => {
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      error: {
-        message: 'there was an error while creating this user',
-      }
+      message: 'there was an error while creating this user',
     });
   }
 };
@@ -138,9 +127,7 @@ module.exports.updateExistingUser = async (req, res) => {
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        error: {
-          message: 'there was an error while updating this user',
-        }
+        message: 'there was an error while updating this user',
       });
     }
   }
