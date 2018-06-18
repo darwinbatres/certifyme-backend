@@ -47,6 +47,20 @@ module.exports.getUserInformation = async (id) => {
   return user;
 };
 
+module.exports.getOneUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await findById({ id, res });
+  if (user) {
+    res.json({
+      response: {
+        data: {
+          user,
+        },
+      },
+    });
+  }
+};
+
 // GET => /api/v1/users
 module.exports.getAllUsers = async (req, res) => {
   try {
@@ -77,20 +91,7 @@ module.exports.getAllUsers = async (req, res) => {
   }
 };
 
-module.exports.getOneUser = async (req, res) => {
-  const { id } = req.params;
-  const user = await findById({ id, res });
-  if (user) {
-    res.json({
-      response: {
-        data: {
-          user,
-        },
-      },
-    });
-  }
-};
-
+// POST => /api/v1/users
 module.exports.addNewUser = async (req, res) => {
   // TO-DO
   // add validation for required fields
@@ -107,30 +108,21 @@ module.exports.addNewUser = async (req, res) => {
       password,
     });
     res.json({
-      response: {
-        data: {
-          message: 'User created successfully!',
-          user: {
-            id: newUser.id,
-            firstName,
-            lastName,
-            email,
-            practice,
-            roles,
-          },
-        },
+      user: {
+        id: newUser.id,
+        firstName,
+        lastName,
+        email,
+        practice,
+        roles,
       },
     });
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      response: {
-        errors: [
-          {
-            message: 'there was an error while creating this user',
-          },
-        ],
-      },
+      error: {
+        message: 'there was an error while creating this user',
+      }
     });
   }
 };

@@ -36,48 +36,59 @@
           "200": {
             "description": "List of all users in the application",
             "schema": {
-              "$ref": "#definitions/users"
+              "$ref": "#models/users"
             }
           },
           "404": {
             "description": "No users present in the application",
             "schema": {
-              "$ref": "#definitions/error"
+              "$ref": "#models/error"
             }
           },
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/error"
+              "$ref": "#models/error"
             }
           }
         }
       },
       "post": {
         "tags": ["Users"],
-        "summary": "Will ",
-        "description": "Wil retrieve list of all users",
+        "summary": "Will allow to insert/create new users to the application",
+        "description": "It provides the option to insert/create new users to the application",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "user",
+            "description": "User we want to create",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/models/user"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "List of all users in the application",
+            "description": "User is created successfully",
             "schema": {
-              "$ref": "#/definitions/users"
+              "$ref": "#/models/userResponse"
             }
           },
-          "404": {
-            "description": "No users present in the application",
+          "500": {
+            "description": "Internal Server Error",
             "schema": {
-              "$ref": "#/definitions/errors"
+              "$ref": "#models/error"
             }
           }
         }
       }
     }
   },
-  "definitions": {
+  "models": {
     "user": {
-      "required": ["firstName", "lastName", "email", "practice", "roles"],
+      "required": ["firstName", "lastName", "email", "practice", "roles", "password"],
       "properties": {
         "id": {
           "type": "integer"
@@ -96,6 +107,36 @@
         },
         "roles": {
           "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "userResponse": {
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "practice": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "string"
+            }
+          }
         }
       }
     },
@@ -104,7 +145,7 @@
         "users": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/user"
+            "$ref": "#/models/user"
           }
         }
       }
@@ -121,7 +162,7 @@
         "errors": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/error"
+            "$ref": "#/models/error"
           }
         }
       }
