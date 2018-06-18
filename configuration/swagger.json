@@ -84,6 +84,140 @@
           }
         }
       }
+    },
+    "/v1/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Will retrieve information on one specific user",
+        "description": "Will retrieve information on one specific user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the user we want to retrieve",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is retrieved successfully",
+            "schema": {
+              "$ref": "#/models/userResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter, number as userId expected",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No user found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Will allow to update existing users",
+        "description": "Will allow to update existing users",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the user we want to modify",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "user",
+            "description": "User we want to update",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/models/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is updated successfully",
+            "schema": {
+              "$ref": "#/models/response"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter, number as userId expected",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No user found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Will allow to delete an existing user",
+        "description": "Will allow to delete an existing user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the user we want to modify",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is deleted successfully",
+            "schema": {
+              "$ref": "#/models/response"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter, number as userId expected",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No user found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      }
     }
   },
   "models": {
@@ -147,6 +281,13 @@
           "items": {
             "$ref": "#/models/user"
           }
+        }
+      }
+    },
+    "response": {
+      "properties": {
+        "message": {
+          "type": "string"
         }
       }
     },

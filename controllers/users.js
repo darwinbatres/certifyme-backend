@@ -6,13 +6,7 @@ const defaultFields = ['id', 'firstName', 'lastName', 'email', 'practice', 'role
 const findById = async ({ id, res }) => {
   if (!parseInt(id, 10)) {
     res.status(400).json({
-      response: {
-        errors: [
-          {
-            message: 'Invalid Id passed as parameter, number as userId expected',
-          },
-        ],
-      },
+      message: 'Invalid Id passed as parameter, number as userId expected',
     });
   } else {
     try {
@@ -21,21 +15,13 @@ const findById = async ({ id, res }) => {
         return user;
       }
       res.status(404).json({
-        response: {
-          data: {
-            message: 'No user found',
-          },
-        },
+        message: 'No user found',
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'There was an error while trying to retrive information for this user',
-            },
-          ],
+        error: {
+          message: 'There was an error while trying to retrive information for this user',
         },
       });
     }
@@ -47,16 +33,13 @@ module.exports.getUserInformation = async (id) => {
   return user;
 };
 
+// GET => /api/v1/users/:id
 module.exports.getOneUser = async (req, res) => {
   const { id } = req.params;
   const user = await findById({ id, res });
   if (user) {
     res.json({
-      response: {
-        data: {
-          user,
-        },
-      },
+      user,
     });
   }
 };
@@ -127,6 +110,7 @@ module.exports.addNewUser = async (req, res) => {
   }
 };
 
+// PATCH => /api/v1/users/:id
 module.exports.updateExistingUser = async (req, res) => {
   // TO-DO
   // add validation for required fields
@@ -134,7 +118,7 @@ module.exports.updateExistingUser = async (req, res) => {
   const user = await findById({ id, res });
   if (user) {
     const {
-      firstName, lastName, email, practice, roles,
+      firstName, lastName, email, practice, roles, password
     } = req.body;
     try {
       await Users.update(
@@ -144,31 +128,25 @@ module.exports.updateExistingUser = async (req, res) => {
           email,
           practice,
           roles,
+          password
         },
         { where: { id } },
       );
       res.json({
-        response: {
-          data: {
-            message: 'User updated successfully',
-          },
-        },
+        message: 'User updated successfully'
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'there was an error while updating this user',
-            },
-          ],
-        },
+        error: {
+          message: 'there was an error while updating this user',
+        }
       });
     }
   }
 };
 
+// DELETE => /api/v1/users/:id
 module.exports.deleteExistingUser = async (req, res) => {
   const { id } = req.params;
   const user = await findById({ id, res });
@@ -180,22 +158,12 @@ module.exports.deleteExistingUser = async (req, res) => {
         },
       });
       res.json({
-        response: {
-          data: {
-            message: 'User deleted successfully',
-          },
-        },
+        message: 'User deleted successfully',
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'there was an error while deleting this user',
-            },
-          ],
-        },
+        message: 'there was an error while deleting this user',
       });
     }
   }
