@@ -6,13 +6,9 @@ const defaultFields = ['id', 'name', 'practice', 'version', 'expired', 'createdA
 const findById = async ({ id, res }) => {
   if (!parseInt(id, 10)) {
     res.status(400).json({
-      response: {
-        errors: [
-          {
-            message: 'Invalid Id passed as parameter, number as certificationId expected',
-          },
-        ],
-      },
+      error: {
+        message: 'Invalid Id passed as parameter, number as certificationId expected',
+      }
     });
   } else {
     try {
@@ -21,38 +17,28 @@ const findById = async ({ id, res }) => {
         return certification;
       }
       res.status(404).json({
-        response: {
-          data: {
-            message: 'No certification found',
-          },
-        },
+        error: {
+          message: 'No certification found',
+        }
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message:
-                'There was an error while trying to retrive information for this certification',
-            },
-          ],
-        },
+        error: {
+          message: 'There was an error while trying to retrive information for this certification',
+        }
       });
     }
   }
 };
 
+// GET => /api/v1/certifications/:id
 module.exports.getOneCertification = async (req, res) => {
   const { id } = req.params;
   const certification = await findById({ id, res });
   if (certification) {
     res.json({
-      response: {
-        data: {
-          certification,
-        },
-      },
+      certification,
     });
   }
 };
@@ -104,6 +90,9 @@ module.exports.addNewCertification = async (req, res) => {
         name,
         practice,
         version,
+        expired: newCertification.expired,
+        createdAt: newCertification.createdAt,
+        updatedAt: newCertification.updatedAt
       },
     });
   } catch (err) {

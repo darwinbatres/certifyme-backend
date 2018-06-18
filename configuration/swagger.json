@@ -277,6 +277,49 @@
           }
         }
       }
+    },
+    "/v1/certifications/{id}": {
+      "get": {
+        "tags": ["Certifications"],
+        "summary": "Will retrieve information on one specific certification",
+        "description": "Will retrieve information on one specific certification",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the certification we want to retrieve",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certification is retrieved successfully",
+            "schema": {
+              "$ref": "#/models/certificationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter to retrieve a certification",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No certification found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      }
     }
   },
   "models": {
@@ -411,6 +454,15 @@
               "type": "string"
             },
             "version": {
+              "type": "string"
+            },
+            "expired": {
+              "type": "boolean"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "updatedAt": {
               "type": "string"
             }
            }
