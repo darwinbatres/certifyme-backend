@@ -245,6 +245,37 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": ["Certifications"],
+        "summary": "Will create a new certification",
+        "description": "Will create a new certification",
+        "produces": ["application/json"],
+         "parameters": [
+          {
+            "name": "certification",
+            "description": "Certification we want to create",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/models/certification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New certification was successfully created",
+            "schema": {
+              "$ref": "#models/certificationResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
       }
     }
   },
@@ -339,27 +370,14 @@
     "certification": {
       "required": ["name", "addedBy", "practice", "version"],
        "properties": {
+        "id": {
+          "type": "integer"
+        },
         "name": {
           "type": "string"
         },
         "addedBy": {
           "type": "integer"
-        },
-        "practice": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        }
-       }
-    },
-    "certificationResponse": {
-       "properties": {
-         "id": {
-            "type": "integer"
-         },
-        "name": {
-          "type": "string"
         },
         "practice": {
           "type": "string"
@@ -378,12 +396,33 @@
         }
        }
     },
+    "certificationResponse": {
+       "properties": {
+         "certification": {
+           "type": "object",
+           "properties": {
+             "id": {
+                "type": "integer"
+             },
+            "name": {
+              "type": "string"
+            },
+            "practice": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+           }
+         }
+       }
+    },
     "certifications": {
       "properties": {
         "certifications": {
           "type": "array",
           "items": {
-            "$ref": "#/models/certificationResponse"
+            "$ref": "#/models/certification"
           }
         }
       }

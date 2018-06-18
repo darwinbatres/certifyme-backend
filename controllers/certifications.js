@@ -43,29 +43,6 @@ const findById = async ({ id, res }) => {
   }
 };
 
-// GET => /api/v1/certifications
-module.exports.getAllCertifications = async (req, res) => {
-  try {
-    const certifications = await Certification.findAll({
-      attributes: defaultFields,
-    });
-    if (certifications.length > 0) {
-      res.json({
-        certifications,
-      });
-    } else {
-      res.status(404).json({
-        message: 'No certifications found',
-      });
-    }
-  } catch (err) {
-    logger.error(err);
-    res.status(500).json({
-      message: 'error found while retrieving certifications, check the logs to see what the error is about',
-    });
-  }
-};
-
 module.exports.getOneCertification = async (req, res) => {
   const { id } = req.params;
   const certification = await findById({ id, res });
@@ -80,6 +57,34 @@ module.exports.getOneCertification = async (req, res) => {
   }
 };
 
+// GET => /api/v1/certifications
+module.exports.getAllCertifications = async (req, res) => {
+  try {
+    const certifications = await Certification.findAll({
+      attributes: defaultFields,
+    });
+    if (certifications.length > 0) {
+      res.json({
+        certifications,
+      });
+    } else {
+      res.status(404).json({
+        error: {
+          message: 'No certifications found',
+        }
+      });
+    }
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({
+      error: {
+        message: 'error found while retrieving certifications, check the logs to see what the error is about',
+      }
+    });
+  }
+};
+
+// POST => /api/v1/certifications
 module.exports.addNewCertification = async (req, res) => {
   // TO-DO
   // add validation for required fields
@@ -94,28 +99,19 @@ module.exports.addNewCertification = async (req, res) => {
       version,
     });
     res.json({
-      response: {
-        data: {
-          message: 'Certification created successfully!',
-          certification: {
-            id: newCertification.id,
-            name,
-            practice,
-            version,
-          },
-        },
+      certification: {
+        id: newCertification.id,
+        name,
+        practice,
+        version,
       },
     });
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      response: {
-        errors: [
-          {
-            message: 'there was an error while creating this certification',
-          },
-        ],
-      },
+      error: {
+        message: 'there was an error while creating this certification',
+      }
     });
   }
 };
