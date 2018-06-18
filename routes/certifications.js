@@ -3,6 +3,7 @@ const controller = require('../controllers/certifications');
 
 const router = express.Router();
 
+// /api/v1/certifications
 router.get('/', controller.getAllCertifications);
 router.get('/:id', controller.getOneCertification);
 router.post('/', controller.addNewCertification);

@@ -43,6 +43,7 @@ const findById = async ({ id, res }) => {
   }
 };
 
+// GET => /api/v1/certifications
 module.exports.getAllCertifications = async (req, res) => {
   try {
     const certifications = await Certification.findAll({
@@ -50,32 +51,17 @@ module.exports.getAllCertifications = async (req, res) => {
     });
     if (certifications.length > 0) {
       res.json({
-        response: {
-          data: {
-            certifications,
-          },
-        },
+        certifications,
       });
     } else {
       res.status(404).json({
-        response: {
-          data: {
-            message: 'No certifications found',
-          },
-        },
+        message: 'No certifications found',
       });
     }
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      response: {
-        errors: [
-          {
-            message:
-              'error found while retrieving certifications, check the logs to see what the error is about',
-          },
-        ],
-      },
+      message: 'error found while retrieving certifications, check the logs to see what the error is about',
     });
   }
 };

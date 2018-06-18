@@ -218,6 +218,34 @@
           }
         }
       }
+    },
+    "/v1/certifications": {
+      "get": {
+        "tags": ["Certifications"],
+        "summary": "Will retrieve the list of all certifications",
+        "description": "Will retrieve the list of all certifications",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "List of all certifications in the application",
+            "schema": {
+              "$ref": "#models/certifications"
+            }
+          },
+          "404": {
+            "description": "No certification present in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      }
     }
   },
   "models": {
@@ -304,6 +332,58 @@
           "type": "array",
           "items": {
             "$ref": "#/models/error"
+          }
+        }
+      }
+    },
+    "certification": {
+      "required": ["name", "addedBy", "practice", "version"],
+       "properties": {
+        "name": {
+          "type": "string"
+        },
+        "addedBy": {
+          "type": "integer"
+        },
+        "practice": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+       }
+    },
+    "certificationResponse": {
+       "properties": {
+         "id": {
+            "type": "integer"
+         },
+        "name": {
+          "type": "string"
+        },
+        "practice": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "expired": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+       }
+    },
+    "certifications": {
+      "properties": {
+        "certifications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/models/certificationResponse"
           }
         }
       }
