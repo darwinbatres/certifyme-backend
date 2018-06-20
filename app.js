@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const routes = require('./routes');
 const { port } = require('./configuration');
 const database = require('./configuration/db');
@@ -6,7 +7,7 @@ const middleware = require('./middleware');
 const logger = require('./utils/logger');
 
 const app = express();
-
+app.use(compression());
 middleware(app);
 routes(app);
 
