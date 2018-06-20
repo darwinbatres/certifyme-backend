@@ -3,7 +3,7 @@ const controller = require('../controllers/coaching');
 
 const router = express.Router();
 
-// /coaching
+// /coach-practice
 router.get('/', controller.getAllRelations);
 router.post('/', controller.addNewRelation);
 router.patch('/:id', controller.updateExistingRelation);

@@ -58,6 +58,7 @@ const getRelations = async ({ coaches }) => {
   return Promise.all(relations);
 };
 
+// GET => /api/v1/coach-practice
 module.exports.getAllRelations = async (req, res) => {
   try {
     const coaches = await Coaching.findAll({
@@ -71,32 +72,17 @@ module.exports.getAllRelations = async (req, res) => {
       const relations = await getUsersInformation({ relationsIds });
 
       res.json({
-        response: {
-          data: {
-            relations,
-          },
-        },
+        relations,
       });
     } else {
       res.status(404).json({
-        response: {
-          data: {
-            message: 'No relations found',
-          },
-        },
+        message: 'No relations found',
       });
     }
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      response: {
-        errors: [
-          {
-            message:
-              'error found while retrieving relations, check the logs to see what the error is about',
-          },
-        ],
-      },
+      message: 'error found while retrieving relations, check the logs to see what the error is about',
     });
   }
 };

@@ -411,6 +411,34 @@
           }
         }
       }
+    },
+    "/v1/coach-practice": {
+      "get": {
+        "tags": ["Coach-Practice"],
+        "summary": "Will retrieve the list of all relations between coaches and coachees",
+        "description": "Will retrieve the list of all relations between coaches and coachees",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "List of all relations in the application",
+            "schema": {
+              "$ref": "#models/relations"
+            }
+          },
+          "404": {
+            "description": "No relations present in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      }
     }
   },
   "models": {
@@ -569,6 +597,57 @@
           }
         }
       }
-    }
+    },
+    "employee": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "practice": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "string"
+        }
+      }
+    },
+    "relations": {
+      "properties": {
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "coach": {
+                "$ref": "#models/employee"
+              },
+              "coachees": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "coachee": {
+                      "$ref": "#models/employee"
+                    },
+                    "relationId": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } 
   }
 }
