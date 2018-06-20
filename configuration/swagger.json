@@ -438,6 +438,43 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": ["Coach-Practice"],
+        "summary": "Will create a new relation coach-coachee",
+        "description": "Will create a new relation coach-coachee",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "information",
+            "description": "Information for the relation we want to build",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/models/coach-coachee"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User is created successfully",
+            "schema": {
+              "$ref": "#/models/response"
+            }
+          },
+          "400": {
+            "description": "Invalid Id's passed as parameters, both Id's are requied and must be numeric values",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
       }
     }
   },
@@ -595,6 +632,16 @@
           "items": {
             "$ref": "#/models/certification"
           }
+        }
+      }
+    },
+    "coach-coachee": {
+      "properties": {
+        "coachId": {
+          "type": "number"
+        },
+        "coacheeId": {
+          "type": "number"
         }
       }
     },

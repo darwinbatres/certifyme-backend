@@ -87,18 +87,12 @@ module.exports.getAllRelations = async (req, res) => {
   }
 };
 
+// POST => /api/v1/coach-practice
 module.exports.addNewRelation = async (req, res) => {
   const { coachId, coacheeId } = req.body;
   if (!parseInt(coachId, 10) || !parseInt(coacheeId, 10)) {
     res.status(400).json({
-      response: {
-        errors: [
-          {
-            message:
-              'both coachId and coacheeId are required values and both must be numeric values',
-          },
-        ],
-      },
+      message: 'both coachId and coacheeId are required values and both must be numeric values',
     });
   } else {
     try {
@@ -106,23 +100,13 @@ module.exports.addNewRelation = async (req, res) => {
         coachId,
         coacheeId,
       });
-      res.json({
-        response: {
-          data: {
-            message: 'Relation created successfully!',
-          },
-        },
+      res.status(201).json({
+        message: 'Relation created successfully!',
       });
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'there was an error while creating this relation',
-            },
-          ],
-        },
+        message: 'there was an error while creating this relation',
       });
     }
   }
