@@ -85,6 +85,49 @@
         }
       }
     },
+    "/v1/users/search": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Will retrieve information on one specific user (based on email)",
+        "description": "Will retrieve information on one specific user (based on email)",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "description": "Email of the user we want to retrieve",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is retrieved successfully",
+            "schema": {
+              "$ref": "#/models/userResponse"
+            }
+          },
+          "400": {
+            "description": "Email is a required field",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No user found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      }
+    },
     "/v1/users/{id}": {
       "get": {
         "tags": ["Users"],

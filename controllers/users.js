@@ -65,6 +65,37 @@ module.exports.getAllUsers = async (req, res) => {
   }
 };
 
+// GET => /api/v1/users/search
+module.exports.search = async (req, res) => {
+  const { email } = req.query;
+  if(email) {
+    try {
+      const user = await Users.findOne({
+        where: { email },
+        attributes: defaultFields,
+      });
+      if (user) {
+        res.json({
+          user
+        });
+      } else {
+        res.status(404).json({
+          message: 'No Users found',
+        });
+      }
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({
+        message: 'error found while retrieving users, check the logs to see what the error is about',
+      });
+    }
+  } else {
+    res.status(400).json({
+      message: 'email is a required field',
+    });
+  }
+};
+
 // POST => /api/v1/users
 module.exports.addNewUser = async (req, res) => {
   // TO-DO
