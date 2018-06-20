@@ -147,52 +147,30 @@ module.exports.getMyCoach = async (req, res) => {
   }
 };
 
+// GET => /api/v1/coach-practice/mycoachees/:id
 module.exports.getMyCoachees = async (req, res) => {
   const { coachId } = req.params;
-
   if (!parseInt(coachId, 10)) {
     res.status(400).json({
-      response: {
-        errors: [
-          {
-            message: 'coachId is a required value and it must be numeric value',
-          },
-        ],
-      },
+      message: 'coachId is a required value and it must be numeric value',
     });
   } else {
     try {
       const coachees = await getCoachees({ coachId });
-
       if (coachees.length > 0) {
         const coacheesResults = await getEmbeddedCoachees({ coachees });
         res.json({
-          response: {
-            data: {
-              coachees: coacheesResults,
-            },
-          },
+          coachees: coacheesResults,
         });
       } else {
         res.status(404).json({
-          response: {
-            data: {
-              message: 'No coachees found',
-            },
-          },
+          message: 'No coachees found',
         });
       }
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message:
-                'error found while retrieving coachees, check the logs to see what the error is about',
-            },
-          ],
-        },
+        message: 'error found while retrieving coachees, check the logs to see what the error is about',
       });
     }
   }

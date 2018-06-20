@@ -612,6 +612,49 @@
           }
         }
       }
+    },
+    "/v1/coach-practice/mycoachees/{id}": {
+       "get": {
+        "tags": ["Coach-Practice"],
+        "summary": "Will retrieve the list of coachees for a given coach (id)",
+        "description": "Will retrieve the list of coachees for a given coach (id)",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the coach for whom we want to get coachees",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of coachees and their information",
+            "schema": {
+              "$ref": "#models/coachees"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter to retrieve coachees information",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No coachees found with that Id",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      }
     }
   },
   "models": {
@@ -839,6 +882,24 @@
           "$ref": "#models/employee"
         }
       }
+    },
+    "coachees": {
+      "properties": {
+          "coachees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "coachee": {
+                  "$ref": "#models/employee"
+                },
+                "relationId": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
     }
   }
 }
