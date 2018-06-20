@@ -14,6 +14,7 @@ module.exports = (app) => {
     swaggerOptions: {
       explorer: true,
       validatorUrl: null,
+      docExpansion: ["none"]
     },
   };
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, options));
