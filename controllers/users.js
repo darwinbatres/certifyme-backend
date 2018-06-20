@@ -81,7 +81,7 @@ module.exports.addNewUser = async (req, res) => {
       roles,
       password,
     });
-    res.json({
+    res.status(201).json({
       user: {
         id: newUser.id,
         firstName,

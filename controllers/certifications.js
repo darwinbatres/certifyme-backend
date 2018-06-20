@@ -74,7 +74,7 @@ module.exports.addNewCertification = async (req, res) => {
       practice,
       version,
     });
-    res.json({
+    res.status(201).json({
       certification: {
         id: newCertification.id,
         name,
