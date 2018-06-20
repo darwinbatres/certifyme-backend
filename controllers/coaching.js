@@ -218,6 +218,42 @@ module.exports.getMyCoachees = async (req, res) => {
   }
 };
 
+// PATCH => /api/v1/coach-practice/:id
+module.exports.updateExistingRelation = async (req, res) => {
+  const { id } = req.params;
+  const { coachId, coacheeId } = req.body;
+  if (!parseInt(coachId, 10) || !parseInt(coacheeId, 10) || !parseInt(id, 10)) {
+    res.status(400).json({
+      message: 'coachId, coacheeId and relationId are required values and all must be numeric values',
+    });
+  } else {
+    try {
+      const relation = await Coaching.findById(id);
+      if (relation) {
+        await Coaching.update(
+          {
+            coachId,
+            coacheeId,
+          },
+          { where: { id } },
+        );
+        res.json({
+          message: 'Relation updated successfully',
+        });
+      } else {
+        res.status(404).json({
+          message: 'No relation found',
+        });
+      }
+    } catch (err) {
+      logger.error(err);
+      res.status(500).json({
+        message: 'there was an error while creating this relation',
+      });
+    }
+  }
+};
+
 module.exports.deleteExistingRelation = async (req, res) => {
   const { id } = req.params;
   if (!parseInt(id, 10)) {
@@ -264,63 +300,6 @@ module.exports.deleteExistingRelation = async (req, res) => {
             {
               message:
                 'error found while retrieving relation information, check the logs to see what the error is about',
-            },
-          ],
-        },
-      });
-    }
-  }
-};
-
-module.exports.updateExistingRelation = async (req, res) => {
-  const { id } = req.params;
-  const { coachId, coacheeId } = req.body;
-  if (!parseInt(coachId, 10) || !parseInt(coacheeId, 10) || !parseInt(id, 10)) {
-    res.status(400).json({
-      response: {
-        errors: [
-          {
-            message:
-              'coachId, coacheeId and relationId are required values and all must be numeric values',
-          },
-        ],
-      },
-    });
-  } else {
-    try {
-      const relation = await Coaching.findById(id);
-
-      if (relation) {
-        await Coaching.update(
-          {
-            coachId,
-            coacheeId,
-          },
-          { where: { id } },
-        );
-        res.json({
-          response: {
-            data: {
-              message: 'Relation updated successfully',
-            },
-          },
-        });
-      } else {
-        res.status(404).json({
-          response: {
-            data: {
-              message: 'No relation found',
-            },
-          },
-        });
-      }
-    } catch (err) {
-      logger.error(err);
-      res.status(500).json({
-        response: {
-          errors: [
-            {
-              message: 'there was an error while creating this relation',
             },
           ],
         },

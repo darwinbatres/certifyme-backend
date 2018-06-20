@@ -476,6 +476,58 @@
           }
         }
       }
+    },
+    "/v1/coach-practice/{id}": {
+      "patch": {
+        "tags": ["Coach-Practice"],
+        "summary": "Will update information on a specific coach-coachee relation",
+        "description": "Will update information on a specific coach-coachee relation",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the relation we want to update",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "relation",
+            "description": "Relation we want to update",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/models/coach-coachee"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relation is updated successfully",
+            "schema": {
+              "$ref": "#/models/response"
+            }
+          },
+          "400": {
+            "description": "Invalid Id's passed as parameters, all Id's are requied and must be numeric values",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No relation found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
+      }
     }
   },
   "models": {
@@ -636,6 +688,7 @@
       }
     },
     "coach-coachee": {
+      "required": ["coachId", "coacheeId"],
       "properties": {
         "coachId": {
           "type": "number"
