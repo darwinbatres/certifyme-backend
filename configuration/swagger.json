@@ -527,6 +527,47 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": ["Coach-Practice"],
+        "summary": "Will allow to delete an existing relation",
+        "description": "Will allow to delete an existing relation",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id of the relation we want to delete",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relation is deleted successfully",
+            "schema": {
+              "$ref": "#/models/response"
+            }
+          },
+          "400": {
+            "description": "Invalid Id passed as parameter to retrieve a relation",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "404": {
+            "description": "No relation found in the application",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#models/error"
+            }
+          }
+        }
       }
     }
   },

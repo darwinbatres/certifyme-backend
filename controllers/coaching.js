@@ -254,22 +254,16 @@ module.exports.updateExistingRelation = async (req, res) => {
   }
 };
 
+// DELETE => /api/v1/coach-practice/:id
 module.exports.deleteExistingRelation = async (req, res) => {
   const { id } = req.params;
   if (!parseInt(id, 10)) {
     res.status(400).json({
-      response: {
-        errors: [
-          {
-            message: 'relationId is a required value and it must be numeric value',
-          },
-        ],
-      },
+      message: 'relationId is a required value and it must be numeric value',
     });
   } else {
     try {
       const relation = await Coaching.findById(id);
-
       if (relation) {
         await Coaching.destroy({
           where: {
@@ -277,32 +271,17 @@ module.exports.deleteExistingRelation = async (req, res) => {
           },
         });
         res.json({
-          response: {
-            data: {
-              message: 'Relation deleted successfully',
-            },
-          },
+          message: 'Relation deleted successfully',
         });
       } else {
         res.status(404).json({
-          response: {
-            data: {
-              message: 'No relation found',
-            },
-          },
+          message: 'No relation found',
         });
       }
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        response: {
-          errors: [
-            {
-              message:
-                'error found while retrieving relation information, check the logs to see what the error is about',
-            },
-          ],
-        },
+        message: 'error found while retrieving relation information, check the logs to see what the error is about',
       });
     }
   }
