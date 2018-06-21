@@ -16,7 +16,8 @@ const User = sequelize.define('user', {
 User.beforeCreate(async (user) => {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt); // eslint-disable-line
-  return user.password;
+  user.email = user.email.toLowerCase();
+  return user;
 });
 
 // Create the table if it doesn't exist
