@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 module.exports = (app) => {
+  app.use(compression());
   app.use(cors());
   app.use(morgan('dev'));
 

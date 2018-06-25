@@ -23,7 +23,8 @@
 ## API documentation
 
 - `/api-docs`
-- before working on the documentation, please make sure you update `host` property
+- depending on where you are hosting your app, two schemes are provided `http` and `https`
+- before working on the checking the documentation, please make sure you update `host` property
 - file `/configuration/swagger.json`
 - i.e
   - `"host": "nodejs-raven125.c9users.io"`
@@ -46,3 +47,7 @@
 > this will delete (and recreate) the existing tables but will NOT add content to them
 
 - `npm run rebase`
+
+## run the application
+
+- `npm start`

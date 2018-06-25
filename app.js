@@ -7,7 +7,6 @@ const middleware = require('./middleware');
 const logger = require('./utils/logger');
 
 const app = express();
-app.use(compression());
 middleware(app);
 routes(app);
 
