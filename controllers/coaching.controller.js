@@ -82,7 +82,8 @@ module.exports.getAllRelations = async (req, res) => {
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      message: 'error found while retrieving relations, check the logs to see what the error is about',
+      message:
+        'error found while retrieving relations, check the logs to see what the error is about',
     });
   }
 };
@@ -141,7 +142,8 @@ module.exports.getMyCoach = async (req, res) => {
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        message: 'error found while retrieving coach information, check the logs to see what the error is about',
+        message:
+          'error found while retrieving coach information, check the logs to see what the error is about',
       });
     }
   }
@@ -170,7 +172,8 @@ module.exports.getMyCoachees = async (req, res) => {
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        message: 'error found while retrieving coachees, check the logs to see what the error is about',
+        message:
+          'error found while retrieving coachees, check the logs to see what the error is about',
       });
     }
   }
@@ -182,7 +185,8 @@ module.exports.updateExistingRelation = async (req, res) => {
   const { coachId, coacheeId } = req.body;
   if (!parseInt(coachId, 10) || !parseInt(coacheeId, 10) || !parseInt(id, 10)) {
     res.status(400).json({
-      message: 'coachId, coacheeId and relationId are required values and all must be numeric values',
+      message:
+        'coachId, coacheeId and relationId are required values and all must be numeric values',
     });
   } else {
     try {
@@ -239,7 +243,8 @@ module.exports.deleteExistingRelation = async (req, res) => {
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        message: 'error found while retrieving relation information, check the logs to see what the error is about',
+        message:
+          'error found while retrieving relation information, check the logs to see what the error is about',
       });
     }
   }

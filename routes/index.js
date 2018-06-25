@@ -1,6 +1,6 @@
 const swaggerUI = require('swagger-ui-express');
 
-const practices = require('./practices');
+// const practices = require('./practices');
 const users = require('./users');
 const certifications = require('./certifications');
 const coaching = require('./coaching');
@@ -8,13 +8,12 @@ const coaching = require('./coaching');
 const swaggerDocument = require('../configuration/swagger.json');
 
 module.exports = (app) => {
-  
   // setting up documentation
   const options = {
     swaggerOptions: {
       explorer: true,
       validatorUrl: null,
-      docExpansion: ["none"]
+      docExpansion: ['none'],
     },
   };
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, options));

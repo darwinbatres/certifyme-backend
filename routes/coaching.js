@@ -4,6 +4,7 @@ const controller = require('../controllers/coaching');
 const router = express.Router();
 
 // /coach-practice
+// /api/v1/coach-practice
 router.get('/', controller.getAllRelations);
 router.post('/', controller.addNewRelation);
 router.patch('/:id', controller.updateExistingRelation);

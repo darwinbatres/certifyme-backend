@@ -55,7 +55,8 @@ module.exports.getAllCertifications = async (req, res) => {
   } catch (err) {
     logger.error(err);
     res.status(500).json({
-      message: 'error found while retrieving certifications, check the logs to see what the error is about',
+      message:
+        'error found while retrieving certifications, check the logs to see what the error is about',
     });
   }
 };
@@ -82,7 +83,7 @@ module.exports.addNewCertification = async (req, res) => {
         version,
         expired: newCertification.expired,
         createdAt: newCertification.createdAt,
-        updatedAt: newCertification.updatedAt
+        updatedAt: newCertification.updatedAt,
       },
     });
   } catch (err) {
@@ -95,8 +96,8 @@ module.exports.addNewCertification = async (req, res) => {
 
 // PATCH => /api/v1/certifications/:id
 module.exports.updateExistingCertification = async (req, res) => {
-    // TO-DO
-    // add validation for required fields
+  // TO-DO
+  // add validation for required fields
   const { id } = req.params;
   const certification = await findById({ id, res });
   if (certification) {

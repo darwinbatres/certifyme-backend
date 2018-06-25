@@ -9,7 +9,7 @@ const {
 module.exports.db = () => {
   const sequelize = new Sequelize(dbName, dbUsername, dbPassword, {
     host: dbHost,
-    dialect: dbDialect,
+    dialect: dbDialect.toLowerCase(),
     port: dbPort,
     operatorsAliases: Op,
     pool: {

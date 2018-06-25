@@ -68,7 +68,7 @@ module.exports.getAllUsers = async (req, res) => {
 // GET => /api/v1/users/search
 module.exports.search = async (req, res) => {
   const { email } = req.query;
-  if(email) {
+  if (email) {
     try {
       const user = await Users.findOne({
         where: { email },
@@ -76,7 +76,7 @@ module.exports.search = async (req, res) => {
       });
       if (user) {
         res.json({
-          user
+          user,
         });
       } else {
         res.status(404).json({
@@ -86,7 +86,8 @@ module.exports.search = async (req, res) => {
     } catch (err) {
       logger.error(err);
       res.status(500).json({
-        message: 'error found while retrieving users, check the logs to see what the error is about',
+        message:
+          'error found while retrieving users, check the logs to see what the error is about',
       });
     }
   } else {
@@ -138,7 +139,7 @@ module.exports.updateExistingUser = async (req, res) => {
   const user = await findById({ id, res });
   if (user) {
     const {
-      firstName, lastName, email, practice, roles, password
+      firstName, lastName, email, practice, roles, password,
     } = req.body;
     try {
       await Users.update(
@@ -148,12 +149,12 @@ module.exports.updateExistingUser = async (req, res) => {
           email,
           practice,
           roles,
-          password
+          password,
         },
         { where: { id } },
       );
       res.json({
-        message: 'User updated successfully'
+        message: 'User updated successfully',
       });
     } catch (err) {
       logger.error(err);

@@ -294,7 +294,7 @@
         "summary": "Will create a new certification",
         "description": "Will create a new certification",
         "produces": ["application/json"],
-         "parameters": [
+        "parameters": [
           {
             "name": "certification",
             "description": "Certification we want to create",
@@ -506,7 +506,8 @@
             }
           },
           "400": {
-            "description": "Invalid Id's passed as parameters, both Id's are requied and must be numeric values",
+            "description":
+              "Invalid Id's passed as parameters, both Id's are requied and must be numeric values",
             "schema": {
               "$ref": "#models/error"
             }
@@ -552,7 +553,8 @@
             }
           },
           "400": {
-            "description": "Invalid Id's passed as parameters, all Id's are requied and must be numeric values",
+            "description":
+              "Invalid Id's passed as parameters, all Id's are requied and must be numeric values",
             "schema": {
               "$ref": "#models/error"
             }
@@ -657,7 +659,7 @@
       }
     },
     "/v1/coach-practice/mycoachees/{id}": {
-       "get": {
+      "get": {
         "tags": ["Coach-Practice"],
         "summary": "Will retrieve the list of coachees for a given coach (id)",
         "description": "Will retrieve the list of coachees for a given coach (id)",
@@ -790,7 +792,7 @@
     },
     "certification": {
       "required": ["name", "addedBy", "practice", "version", "expired"],
-       "properties": {
+      "properties": {
         "id": {
           "type": "integer"
         },
@@ -815,16 +817,16 @@
         "updatedAt": {
           "type": "string"
         }
-       }
+      }
     },
     "certificationResponse": {
-       "properties": {
-         "certification": {
-           "type": "object",
-           "properties": {
-             "id": {
-                "type": "integer"
-             },
+      "properties": {
+        "certification": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
             "name": {
               "type": "string"
             },
@@ -843,9 +845,9 @@
             "updatedAt": {
               "type": "string"
             }
-           }
-         }
-       }
+          }
+        }
+      }
     },
     "certifications": {
       "properties": {
@@ -928,21 +930,21 @@
     },
     "coachees": {
       "properties": {
-          "coachees": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "coachee": {
-                  "$ref": "#models/employee"
-                },
-                "relationId": {
-                  "type": "number"
-                }
+        "coachees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "coachee": {
+                "$ref": "#models/employee"
+              },
+              "relationId": {
+                "type": "number"
               }
             }
           }
         }
+      }
     }
   }
 }
