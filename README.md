@@ -2,6 +2,8 @@
 
 > backend application for the certify me POC
 
+- [link to the app](https://certifyme.herokuapp.com/)
+
 ## install
 
 - `npm install`
@@ -33,6 +35,10 @@
   - DB_DIALECT=`mssql | mysql | PostgreSQL`
 
 > for more information on available dialects, check [Sequelize](http://docs.sequelizejs.com/)
+
+- **NOTE**
+- if you need `mysql`,
+- you need to also install `mysql2` package
 
 ## API documentation
 

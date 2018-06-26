@@ -6,7 +6,7 @@
     "url": "https://opensource.org/licenses/MIT"
   },
   "version": "1.0.0",
-  "host": "localhost:3000",
+  "host": "certifyme.herokuapp.com",
   "basePath": "/api",
   "tags": [
     {
