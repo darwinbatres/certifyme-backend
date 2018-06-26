@@ -6,6 +6,20 @@
 
 - `npm install`
 
+## run the application (please make sure the environment variables and further configuration are taken care of)
+
+> the application runs on PM2, the following list of commands are available
+
+- `npm start` this will start the application
+- `npm run restart` this will restart the application
+- `npm run stop` this will stop the application
+- `npm run show` this will show the current status of the application
+- `npm run logs` this will show the logs for the application `press ctrl + c to exist this command`
+- `npm run monitor` this will open a window where you can monitor the application `press ctrl + c to exist this command`
+- `npm run list` this will list the applications you have running <in case you have more than one running on PM2>
+
+---
+
 ## make sure environment variables are configured
 
 - refer to file `.env_ex`
@@ -41,13 +55,9 @@
   - associations between such users
   - 12 random certifications
 
-## Rebase tables content
+## Rebase content <for all tables>
 
 > If you need to delete existing data so you can start adding your own, the following command is available
 > this will delete (and recreate) the existing tables but will NOT add content to them
 
 - `npm run rebase`
-
-## run the application
-
-- `npm start`
