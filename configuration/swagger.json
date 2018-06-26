@@ -6,7 +6,7 @@
     "url": "https://opensource.org/licenses/MIT"
   },
   "version": "1.0.0",
-  "host": "nodejs-raven125.c9users.io",
+  "host": "localhost:3000",
   "basePath": "/api",
   "tags": [
     {
@@ -70,7 +70,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "User is created successfully",
             "schema": {
               "$ref": "#/models/userResponse"
@@ -306,7 +306,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "New certification was successfully created",
             "schema": {
               "$ref": "#models/certificationResponse"

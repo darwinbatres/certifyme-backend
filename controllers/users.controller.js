@@ -1,5 +1,5 @@
 const logger = require('../utils/logger');
-const Users = require('../models/User');
+const Users = require('../models/User.model');
 
 const defaultFields = ['id', 'firstName', 'lastName', 'email', 'practice', 'roles'];
 

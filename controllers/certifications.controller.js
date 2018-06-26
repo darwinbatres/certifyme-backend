@@ -1,5 +1,5 @@
 const logger = require('../utils/logger');
-const Certification = require('../models/Certification');
+const Certification = require('../models/Certification.model');
 
 const defaultFields = ['id', 'name', 'practice', 'version', 'expired', 'createdAt', 'updatedAt'];
 

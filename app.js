@@ -1,5 +1,4 @@
 const express = require('express');
-const compression = require('compression');
 const routes = require('./routes');
 const { port } = require('./configuration');
 const database = require('./configuration/db');

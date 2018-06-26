@@ -2,9 +2,9 @@ const faker = require('faker');
 const logger = require('../utils/logger');
 
 // models
-const Certification = require('../models/Certification');
-const User = require('../models/User');
-const Coaching = require('../models/Coaching');
+const Certification = require('../models/Certification.model');
+const User = require('../models/User.model');
+const Coaching = require('../models/Coaching.model');
 
 const totalUsers = 15;
 const practices = ['DEVELOPMENT', 'QE', 'R&D'];

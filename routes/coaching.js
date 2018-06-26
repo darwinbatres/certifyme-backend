@@ -1,9 +1,8 @@
 const express = require('express');
-const controller = require('../controllers/coaching');
+const controller = require('../controllers/coaching.controller');
 
 const router = express.Router();
 
-// /coach-practice
 // /api/v1/coach-practice
 router.get('/', controller.getAllRelations);
 router.post('/', controller.addNewRelation);

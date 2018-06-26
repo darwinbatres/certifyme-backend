@@ -24,12 +24,12 @@
 
 - `/api-docs`
 - depending on where you are hosting your app, two schemes are provided `http` and `https`
-- before working on the checking the documentation, please make sure you update `host` property
+- before working on the checking the documentation, please make sure you update `host` property and `port`
 - file `/configuration/swagger.json`
 - i.e
-  - `"host": "nodejs-raven125.c9users.io"`
-  - `"host": "localhost"`
-  - `"host": "192.168.1.3"`
+  - `"host": "nodejs-raven125.c9users.io:8080"`
+  - `"host": "localhost:3000"`
+  - `"host": "192.168.1.3:3000"`
 
 ## Dummy data
 

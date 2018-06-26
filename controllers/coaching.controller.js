@@ -1,6 +1,6 @@
 const logger = require('../utils/logger');
-const Coaching = require('../models/Coaching');
-const { getUserInformation } = require('./users');
+const Coaching = require('../models/Coaching.model');
+const { getUserInformation } = require('./users.controller');
 // const Sequelize = require('sequelize');
 
 // const { Op } = Sequelize;
