@@ -4,6 +4,7 @@
   "description": "backend application for the certify me POC",
   "main": "app.js",
   "scripts": {
+    "preinstall": "npm i -g pm2 && pm2 install pm2-logrotate",
     "seed": "node ./configuration/generateData",
     "rebase": "node ./configuration/rebaseData",
     "dev": "nodemon app",
@@ -35,6 +36,7 @@
     "express": "^4.16.3",
     "faker": "^4.1.0",
     "morgan": "^1.9.0",
+    "mysql2": "^1.5.3",
     "pm2": "^2.10.4",
     "sequelize": "^4.37.10",
     "swagger-ui-express": "^3.0.9",
