@@ -16,6 +16,10 @@
     "monitor": "pm2 monit",
     "list": "pm2 list"
   },
+  "engines": {
+    "node": "10.4.1",
+    "npm": "6.1.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/darwinbatres/certifyme-backend.git"
