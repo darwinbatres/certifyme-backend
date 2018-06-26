@@ -36,7 +36,7 @@
 
 ## API documentation
 
-- `/api-docs`
+- path to the docs: `/api-docs`
 - depending on where you are hosting your app, two schemes are provided `http` and `https`
 - before working on the checking the documentation, please make sure you update `host` property and `port`
 - file `/configuration/swagger.json`
